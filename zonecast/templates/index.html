@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ZoneCast — NYC Ride Demand Forecaster</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <span class="logo-icon">⬡</span>
+      <span class="logo-text">ZoneCast</span>
+    </div>
+    <div class="header-meta">NYC Ride Demand Forecasting · Manhattan · XGBoost · 23M trips</div>
+  </header>
+
+  <div class="controls">
+    <div class="control-group">
+      <label for="hour-slider">Hour of Day: <strong id="hour-label">12:00</strong></label>
+      <input type="range" id="hour-slider" min="0" max="23" value="12" step="1"/>
+      <div class="hour-ticks">
+        <span>12am</span><span>6am</span><span>12pm</span><span>6pm</span><span>11pm</span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label for="dow-select">Day of Week:</label>
+      <select id="dow-select">
+        <option value="0">Monday</option>
+        <option value="1" selected>Tuesday</option>
+        <option value="2">Wednesday</option>
+        <option value="3">Thursday</option>
+        <option value="4">Friday</option>
+        <option value="5">Saturday</option>
+        <option value="6">Sunday</option>
+      </select>
+    </div>
+    <div class="legend">
+      <span class="legend-label">Low</span>
+      <div class="legend-bar"></div>
+      <span class="legend-label">High</span>
+    </div>
+  </div>
+
+  <div class="main">
+    <div id="map"></div>
+    <div class="sidebar">
+      <div id="zone-info" class="zone-info placeholder">
+        <div class="placeholder-text">
+          <span class="placeholder-icon">🗺</span>
+          <p>Click any zone on the map to see its 2-hour demand forecast</p>
+        </div>
+      </div>
+      <div id="chart-container" class="chart-container hidden">
+        <div class="chart-header">
+          <div>
+            <div class="zone-name" id="zone-name">Zone</div>
+            <div class="zone-rides" id="zone-rides">— rides predicted</div>
+          </div>
+          <div class="zone-badge" id="zone-badge">—</div>
+        </div>
+        <canvas id="forecast-chart"></canvas>
+        <div class="chart-footer">2-hour forecast · 15-min intervals · XGBoost model</div>
+      </div>
+
+      <div class="stats-panel">
+        <div class="stat">
+          <div class="stat-value">23M</div>
+          <div class="stat-label">Training trips</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">69</div>
+          <div class="stat-label">Manhattan zones</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">8.65</div>
+          <div class="stat-label">Test RMSE</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">21%</div>
+          <div class="stat-label">vs baseline</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
