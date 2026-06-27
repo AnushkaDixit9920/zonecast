@@ -1,12 +1,12 @@
 // ── State ────────────────────────────────────────────────────────────────────
-let currentHour = 12;
-let currentDow  = 1;
+let currentHour = new Date().getHours(); // auto-set to current hour
+let currentDow  = new Date().getDay();   // auto-set to current day (0=Sun, 6=Sat)
 let selectedZone = null;
 let geojsonLayer = null;
-let zoneMap = {};        // zone_id -> { layer, pred }
-let zoneNames = {};      // zone_id -> name
+let zoneMap = {};
+let zoneNames = {};
 let forecastChart = null;
-let allPreds = {};       // zone_id -> predicted_rides
+let allPreds = {};
 
 // ── Map init ─────────────────────────────────────────────────────────────────
 const map = L.map('map', {
@@ -47,7 +47,6 @@ function getZoneMax() {
 fetch('/zones')
   .then(r => r.json())
   .then(geojson => {
-    // Build zone name lookup
     geojson.features.forEach(f => {
       const id = f.properties.LocationID || f.properties.location_id;
       const name = f.properties.zone || f.properties.Zone || `Zone ${id}`;
@@ -94,7 +93,6 @@ fetch('/zones')
       }
     }).addTo(map);
 
-    // Initial prediction load
     loadAllPredictions();
   });
 
@@ -108,7 +106,6 @@ function loadAllPredictions() {
         allPreds[parseInt(k)] = v;
       }
       refreshAllStyles();
-      // Refresh selected zone forecast if one is active
       if (selectedZone) {
         showForecast(selectedZone, zoneNames[selectedZone] || `Zone ${selectedZone}`);
       }
@@ -155,7 +152,6 @@ function showForecast(zoneId, zoneName) {
   fetch(`/forecast?zone=${zoneId}&hour=${currentHour}&dow=${currentDow}`)
     .then(r => r.json())
     .then(windows => {
-      // Show chart container, hide placeholder
       document.querySelector('.zone-info.placeholder').style.display = 'none';
       const cc = document.getElementById('chart-container');
       cc.classList.remove('hidden');
@@ -193,9 +189,7 @@ function showForecast(zoneId, zoneName) {
           plugins: {
             legend: { display: false },
             tooltip: {
-              callbacks: {
-                label: ctx => `${ctx.parsed.y} rides`
-              }
+              callbacks: { label: ctx => `${ctx.parsed.y} rides` }
             }
           },
           scales: {
@@ -217,6 +211,16 @@ function showForecast(zoneId, zoneName) {
 // ── Controls ──────────────────────────────────────────────────────────────────
 const slider = document.getElementById('hour-slider');
 const hourLabel = document.getElementById('hour-label');
+
+// Set slider to current hour on load
+slider.value = currentHour;
+hourLabel.textContent = `${String(currentHour).padStart(2, '0')}:00`;
+
+// Set day of week dropdown to current day
+// JS getDay() returns 0=Sun, but our select is 0=Mon, so we convert
+const jsDow = new Date().getDay(); // 0=Sun, 1=Mon ... 6=Sat
+currentDow = jsDow === 0 ? 6 : jsDow - 1; // convert to Mon=0 ... Sun=6
+document.getElementById('dow-select').value = currentDow;
 
 slider.addEventListener('input', e => {
   currentHour = parseInt(e.target.value);
