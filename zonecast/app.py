@@ -48,7 +48,7 @@ def build_feature_row(zone_id: int, hour: int, dow: int = 1) -> list:
         22: 0.9, 23: 0.6
     }.get(hour, 1.0)
 
-    base = avg * hour_multiplier / 4  # per 15-min window
+    base = avg * hour_multiplier  # per 15-min window
 
     row = [
         hour,                    # hour
