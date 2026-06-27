@@ -17,6 +17,16 @@
     <div class="header-meta">NYC Ride Demand Forecasting · Manhattan · XGBoost · 23M trips</div>
   </header>
 
+  <!-- Info banner -->
+  <div class="info-banner">
+    <div class="info-content">
+      <span class="info-icon">💡</span>
+      <span><strong>What is this?</strong> ZoneCast predicts how many ride pickups will happen in each Manhattan taxi zone in the next 15 minutes — trained on 23M real NYC trips. 
+      <strong>How to use:</strong> Drag the hour slider or change the day to see demand shift across Manhattan. Click any zone for a 2-hour forecast.</span>
+      <button class="info-close" onclick="this.parentElement.parentElement.style.display='none'">✕</button>
+    </div>
+  </div>
+
   <div class="controls">
     <div class="control-group">
       <label for="hour-slider">Hour of Day: <strong id="hour-label">12:00</strong></label>
@@ -51,6 +61,7 @@
         <div class="placeholder-text">
           <span class="placeholder-icon">🗺</span>
           <p>Click any zone on the map to see its 2-hour demand forecast</p>
+          <p class="placeholder-hint">Try 5pm Friday to see the evening rush surge in Midtown</p>
         </div>
       </div>
       <div id="chart-container" class="chart-container hidden">

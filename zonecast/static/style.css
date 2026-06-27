@@ -203,3 +203,39 @@ header {
   color: var(--text) !important;
   border-color: var(--border) !important;
 }
+
+/* ── Info Banner ── */
+.info-banner {
+  background: linear-gradient(135deg, #1a1f35, #1e2440);
+  border-bottom: 1px solid var(--accent);
+  padding: 10px 24px;
+  flex-shrink: 0;
+}
+.info-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 1200px;
+}
+.info-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.info-content strong { color: var(--text); }
+.info-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: auto;
+  flex-shrink: 0;
+  padding: 0 4px;
+}
+.info-close:hover { color: var(--text); }
+.placeholder-hint {
+  font-size: 11px;
+  color: var(--accent);
+  margin-top: 8px;
+  font-style: italic;
+}
